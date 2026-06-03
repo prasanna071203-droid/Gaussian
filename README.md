@@ -25,30 +25,35 @@ To write a program to find the solution of a matrix using Gaussian Elimination.
 ### Step 8: Stop the program.
 ## Program:
 ```
-/*
-Program to find the solution of a matrix using Gaussian Elimination.
-Developed by: PRASANNA P
-RegisterNumber: 212225230214
-*/
+'''Program to solve a matrix using Gaussian elimination without partial pivoting.
+Developed by: Ritesh DP
+RegisterNumber: 212225040339
+'''
 import os
 os.environ["OPENBLAS_NUM_THREADS"]="1"
-
+import numpy as np
+import sys
 n=int(input())
-a=[[float(input()) for j in range(n+1)] for i in range(n)]
-
+a=np.zeros((n,n+1))
+x=np.zeros(n)
 for i in range(n):
+    for j in range(n+1):
+        a[i][j]=float(input())
+for i in range(n):
+    if a[i][i]==0.0:
+        sys.exit('Divide by zero defected!')
     for j in range(i+1,n):
-        f=a[j][i]/a[i][i]
+        ratio=a[j][i]/a[i][i]
         for k in range(n+1):
-            a[j][k]-=f*a[i][k]
-
-x=[0]*n
-
-for i in range(n-1,-1,-1):
-    x[i]=(a[i][n]-sum(a[i][j]*x[j] for j in range(i+1,n)))/a[i][i]
-
+            a[j][k]=a[j][k]-ratio*a[i][k]
+x[n-1]=a[n-1][n]/a[n-1][n-1]
+for i in range(n-2,-1,-1):
+    x[i]=a[i][n]
+    for j in range(i+1,n):
+        x[i]=x[i]-a[i][j]*x[j]
+    x[i]=x[i]/a[i][i]
 for i in range(n):
-    print(f"X{i} = {x[i]:.2f}",end=" ")
+    print('X%d = %.2f' %(i,x[i]),end=' ')
 ```
 
 ## Output:
